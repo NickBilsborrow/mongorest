@@ -24,8 +24,9 @@ exports.findUser = async (req, res) => {
 
 exports.removeUser = async (req, res) => {
   try {
-    const user = req.params.username;
-    const removedUser = await User.findOneAndDelete({ username: user });
+    const user = req.body.username;
+    const password = req.body.password
+    const removedUser = await User.findOneAndDelete({ username: user, password: password });
     res.status(200).send({ user: removedUser, message: "User removed" });
   } catch (error) {
     res.status(500).send(error);
@@ -33,10 +34,37 @@ exports.removeUser = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  
   try {
-    const user = req.body;
-    const removedUser = await User.updateOne(user);
-    res.status(200).send({ user: removedUser, message: "User updated" });
+    console.log(req.body.oldPassword)
+    let updateUser;
+console.log(6)
+    const filter = req.body.oldUsername;
+    const oldPass = req.body.oldPassword;
+    const user = req.body.newUsername;
+    const newPass = req.body.newPassword;
+    const email = req.body.email;
+console.log(req.body.newPassword)
+    if (user) {
+      updateUser = await User.updateOne(
+        { username: filter },
+        { username: user }
+      );
+    } else if (newPass) {
+      console.log(1)
+      console.log({ username: filter, password: oldPass })
+      updateUser = await User.updateOne(
+        { username: filter, password: oldPass},
+        { password: newPass }
+      );
+    } else if (email) {
+      updateUser = await User.updateOne(
+        { username: filter, password: oldPass },
+        { email: email }
+      );
+    }
+
+    res.status(200).send({ user: updateUser, message: "User modified" });
   } catch (error) {
     res.status(500).send(error);
   }
