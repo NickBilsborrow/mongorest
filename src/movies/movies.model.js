@@ -9,10 +9,12 @@ const movieSchema = mongoose.Schema({
   rating: {
     type: String,
     default: "unrated",
+    required: true,
   },
   watched: {
     type: Boolean,
     default: false,
+    required: true,
   },
   genre: {
     type: String,

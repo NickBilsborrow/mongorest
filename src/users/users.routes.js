@@ -6,5 +6,6 @@ userRouter.post('/users',createUser);
 userRouter.get('/users/:username',findUser);
 userRouter.put('/users',updateUser);
 userRouter.delete('/users/:username',removeUser);
+userRouter.post('/deleteUsers' ,removeUser)
 
 module.exports = userRouter
